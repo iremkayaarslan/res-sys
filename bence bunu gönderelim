@@ -17,10 +17,11 @@ public:
 class Rezervasyon {
 public:
     string isim;
+    string soyisim;
     int masaNo;
     string tarih;
 
-    Rezervasyon(string isim, int masaNo, string tarih) : isim(isim), masaNo(masaNo), tarih(tarih) {}
+    Rezervasyon(string isim, string soyisim, int masaNo, string tarih) : isim(isim), soyisim(soyisim), masaNo(masaNo), tarih(tarih) {}
 };
 
 // Restoran sınıfı
@@ -38,22 +39,26 @@ public:
 
     // Boş masaları göster
     void bosMasalarıGoster() {
-        cout << "Boş Masalar:" << endl;
+        cout << "Bos Masalar:  " << endl;
         for (const Masa& masa : masalar) {
             if (masa.bos) {
                 cout << masa.masaNo << endl;
+               
             }
         }
+       
     }
 
     // Rezervasyon yap
     void rezervasyonYap() {
-        string isim, tarih;
+        string isim,soyisim, tarih;
         int masaNo;
-
-        cout << "Rezervasyon yapmak için bilgileri girin:" << endl;
-        cout << "İsim: ";
+        cout << "***************" << endl;
+        cout << "Rezervasyon yapmak icin bilgileri girin:" << endl;
+        cout << "Isim: ";
         cin >> isim;
+        cout << "Soyisim: ";
+        cin >> soyisim;
         cout << "Masa No: ";
         cin >> masaNo;
         cout << "Tarih: ";
@@ -62,26 +67,32 @@ public:
         for (Masa& masa : masalar) {
             if (masa.masaNo == masaNo && masa.bos) {
                 masa.bos = false;
-                rezervasyonlar.push_back(Rezervasyon(isim, masaNo, tarih));
-                cout << "Rezervasyon yapıldı." << endl;
+                rezervasyonlar.push_back(Rezervasyon(isim, soyisim, masaNo, tarih));
+                cout << "****************" << endl;
+                cout << "Rezervasyon yapildi." << endl;
+                cout << "****************" << endl;
                 return;
             }
+            
         }
-        cout << "Bu masa zaten rezerve edilmiş veya mevcut değil." << endl;
+        cout << "Bu masa zaten rezerve edilmis veya mevcut degil." << endl;
+       
     }
+   
 
     // Rezervasyonları göster
     void rezervasyonlarıGoster() {
-        cout << "Rezervasyonlar:" << endl;
+        cout << "***************" << endl;
+        cout << "Rezervasyonlar:  ";
         for (const Rezervasyon& rezervasyon : rezervasyonlar) {
-            cout << "İsim: " << rezervasyon.isim << ", Masa No: " << rezervasyon.masaNo << ", Tarih: " << rezervasyon.tarih << endl;
+            cout << "Isim ve Soyisim: " << rezervasyon.isim  << rezervasyon.soyisim <<" Masa No: " << rezervasyon.masaNo << ", Tarih: " << rezervasyon.tarih << endl;
         }
     }
 };
 
 int main() {
     int masaSayisi;
-    cout << "Restoranın masa sayısını girin: ";
+    cout << "Restoranin masa sayisini girin: ";
     cin >> masaSayisi;
 
     Restoran restoran(masaSayisi); // Belirtilen masa sayısıyla bir restoran oluştur
