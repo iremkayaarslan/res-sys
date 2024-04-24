@@ -1,0 +1,97 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+class Reservation {
+private:
+    string name;
+    int partySize;
+public:
+    Reservation(const string& name, int partySize) : name(name), partySize(partySize) {}
+
+    const string& getName() const { return name; }
+    int getPartySize() const { return partySize; }
+};
+
+class Table {
+private:
+    int capacity;
+    bool available;
+public:
+    Table(int capacity) : capacity(capacity), available(true) {}
+
+    int getCapacity() const { return capacity; }
+    bool isAvailable() const { return available; }
+    void setAvailable(bool value) { available = value; }
+};
+
+class Restaurant {
+private:
+    vector<Reservation> reservations;
+    vector<Table> tables;
+public:
+    Restaurant() {}
+
+    void addReservation(const Reservation& reservation) {
+        reservations.push_back(reservation);
+    }
+
+    void cancelReservation(const string& name) {
+        for (auto it = reservations.begin(); it != reservations.end(); ++it) {
+            if (it->getName() == name) {
+                reservations.erase(it);
+                cout << "Reservation for " << name << " cancelled.\n";
+                return;
+            }
+        }
+        cout << "Reservation for " << name << " not found.\n";
+    }
+
+    bool checkTableAvailability(int partySize) const {
+        for (const Table& table : tables) {
+            if (table.isAvailable() && table.getCapacity() >= partySize) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void displayAvailableTables() const {
+        cout << "Available Tables:\n";
+        for (const Table& table : tables) {
+            if (table.isAvailable()) {
+                cout << "Table with capacity " << table.getCapacity() << endl;
+            }
+        }
+    }
+
+    void addTable(int capacity) {
+        tables.emplace_back(capacity);
+    }
+};
+
+int main() {
+    Restaurant restaurant;
+
+    // Load initial data from file (optional)
+    ifstream infile("reservations.txt");
+    if (infile.is_open()) {
+        string name;
+        int partySize;
+        while (infile >> name >> partySize) {
+            restaurant.addReservation(Reservation(name, partySize));
+        }
+        infile.close();
+    }
+
+    // Add some initial tables
+    restaurant.addTable(2);
+    restaurant.addTable(4);
+    restaurant.addTable(6);
+
+    // Entry point for the C++ backend
+    return 0;
+}
