@@ -1,0 +1,122 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Masa sınıfı
+class Masa {
+public:
+    int masaNo;
+    bool bos;
+
+    Masa(int no) : masaNo(no), bos(true) {}
+};
+
+// Rezervasyon sınıfı
+class Rezervasyon {
+public:
+    string isim;
+    string soyisim;
+    int masaNo;
+    string tarih;
+
+    Rezervasyon(string isim, string soyisim, int masaNo, string tarih) : isim(isim), soyisim(soyisim), masaNo(masaNo), tarih(tarih) {}
+};
+
+// Restoran sınıfı
+class Restoran {
+private:
+    vector<Masa> masalar;
+    vector<Rezervasyon> rezervasyonlar;
+
+public:
+    Restoran(int masaSayisi) {
+        // Belirtilen masa sayısı kadar masalar oluşturulur
+        for (int i = 1; i <= masaSayisi; ++i) {
+            masalar.push_back(Masa(i));
+        }
+    }
+
+    // Boş masaları göster
+    void bosMasalarıGoster() {
+        cout << "Bos Masalar:" << endl;
+        for (const Masa& masa : masalar) {
+            if (masa.bos) {
+                cout << masa.masaNo << endl;
+            }
+        }
+    }
+
+    // Rezervasyon yap
+    void rezervasyonYap() {
+        string isim, soyisim, tarih;
+        int masaNo;
+        cout << "Rezervasyon yapmak icin bilgileri girin:" << endl;
+        cout << "Isim: ";
+        cin >> isim;
+        cout << "Soyisim: ";
+        cin >> soyisim;
+        cout << "Masa No: ";
+        cin >> masaNo;
+        cout << "Tarih: ";
+        cin >> tarih;
+
+        // Masalar arasında dolaşarak uygun olan masayı bul ve rezervasyon yap
+        for (Masa& masa : masalar) {
+            if (masa.masaNo == masaNo && masa.bos) {
+                masa.bos = false;
+                rezervasyonlar.push_back(Rezervasyon(isim, soyisim, masaNo, tarih));
+                cout << "Rezervasyon yapildi." << endl;
+                return;
+            }
+        }
+        cout << "Bu masa zaten rezerve edilmis veya mevcut degil." << endl;
+    }
+
+    // Rezervasyonları göster
+    void rezervasyonlarıGoster() {
+        cout << "Rezervasyonlar:" << endl;
+        for (const Rezervasyon& rezervasyon : rezervasyonlar) {
+            cout << "Isim ve Soyisim: " << rezervasyon.isim << " " << rezervasyon.soyisim << " Masa No: " << rezervasyon.masaNo << ", Tarih: " << rezervasyon.tarih << endl;
+        }
+    }
+};
+
+int main() {
+    int masaSayisi;
+    cout << "Restoranin masa sayisini girin: ";
+    cin >> masaSayisi;
+
+    Restoran restoran(masaSayisi); // Belirtilen masa sayısıyla bir restoran oluştur
+
+    int secim;
+    do {
+        cout << "\nMenu:\n";
+        cout << "1. Bos Masalari Goster\n";
+        cout << "2. Rezervasyon Yap\n";
+        cout << "3. Rezervasyonlari Goster\n";
+        cout << "4. Cikis\n";
+        cout << "Seciminizi yapin: ";
+        cin >> secim;
+
+        switch (secim) {
+        case 1:
+            restoran.bosMasalarıGoster();
+            break;
+        case 2:
+            restoran.rezervasyonYap();
+            break;
+        case 3:
+            restoran.rezervasyonlarıGoster();
+            break;
+        case 4:
+            cout << "Programdan cikiliyor..." << endl;
+            break;
+        default:
+            cout << "Gecersiz secim! Tekrar deneyin." << endl;
+        }
+    } while (secim != 4);
+
+    return 0;
+}
