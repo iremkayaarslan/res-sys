@@ -1,0 +1,101 @@
+using System;
+using System.IO;
+using System.Windows.Forms;
+
+public class ReservationForm : Form {
+    private Button checkAvailabilityButton;
+    private Button displayTablesButton;
+    private Button makeReservationButton;
+    private Button cancelReservationButton;
+    private TextBox nameTextBox;
+    private NumericUpDown partySizeNumericUpDown;
+
+    public ReservationForm() {
+        InitializeComponents();
+    }
+
+    private void InitializeComponents() {
+        this.Text = "Restaurant Reservation System";
+        this.Size = new System.Drawing.Size(400, 200);
+        this.FormBorderStyle = FormBorderStyle.FixedDialog;
+        this.StartPosition = FormStartPosition.CenterScreen;
+
+        checkAvailabilityButton = new Button();
+        checkAvailabilityButton.Text = "Check Table Availability";
+        checkAvailabilityButton.Location = new System.Drawing.Point(20, 20);
+        checkAvailabilityButton.Click += CheckAvailabilityButton_Click;
+        this.Controls.Add(checkAvailabilityButton);
+
+        displayTablesButton = new Button();
+        displayTablesButton.Text = "Display Available Tables";
+        displayTablesButton.Location = new System.Drawing.Point(20, 60);
+        displayTablesButton.Click += DisplayTablesButton_Click;
+        this.Controls.Add(displayTablesButton);
+
+        makeReservationButton = new Button();
+        makeReservationButton.Text = "Make Reservation";
+        makeReservationButton.Location = new System.Drawing.Point(20, 100);
+        makeReservationButton.Click += MakeReservationButton_Click;
+        this.Controls.Add(makeReservationButton);
+
+        cancelReservationButton = new Button();
+        cancelReservationButton.Text = "Cancel Reservation";
+        cancelReservationButton.Location = new System.Drawing.Point(20, 140);
+        cancelReservationButton.Click += CancelReservationButton_Click;
+        this.Controls.Add(cancelReservationButton);
+
+        Label nameLabel = new Label();
+        nameLabel.Text = "Name:";
+        nameLabel.Location = new System.Drawing.Point(150, 20);
+        this.Controls.Add(nameLabel);
+
+        nameTextBox = new TextBox();
+        nameTextBox.Location = new System.Drawing.Point(200, 20);
+        this.Controls.Add(nameTextBox);
+
+        Label partySizeLabel = new Label();
+        partySizeLabel.Text = "Party Size:";
+        partySizeLabel.Location = new System.Drawing.Point(150, 60);
+        this.Controls.Add(partySizeLabel);
+
+        partySizeNumericUpDown = new NumericUpDown();
+        partySizeNumericUpDown.Minimum = 1;
+        partySizeNumericUpDown.Maximum = 10;
+        partySizeNumericUpDown.Location = new System.Drawing.Point(230, 60);
+        this.Controls.Add(partySizeNumericUpDown);
+    }
+
+    private void CheckAvailabilityButton_Click(object sender, EventArgs e) {
+        // Handle Check Availability button click event
+        // Call the C++ backend to check availability based on selected date/time
+    }
+
+    private void DisplayTablesButton_Click(object sender, EventArgs e) {
+        // Handle Display Available Tables button click event
+        // Call the C++ backend to get available tables and display them
+        MessageBox.Show("Available Tables:\nTable with capacity 2\nTable with capacity 4\nTable with capacity 6");
+    }
+
+    private void MakeReservationButton_Click(object sender, EventArgs e) {
+        // Handle Make Reservation button click event
+        // Get name and party size from the UI and call the C++ backend to make a reservation
+        string name = nameTextBox.Text;
+        int partySize = (int)partySizeNumericUpDown.Value;
+        // Call C++ backend to make reservation
+        MessageBox.Show("Reservation made successfully!");
+    }
+
+    private void CancelReservationButton_Click(object sender, EventArgs e) {
+        // Handle Cancel Reservation button click event
+        // Get name from the UI and call the C++ backend to cancel a reservation
+        string name = nameTextBox.Text;
+        // Call C++ backend to cancel reservation
+        MessageBox.Show("Reservation cancelled.");
+    }
+
+    [STAThread]
+    public static void Main() {
+        Application.EnableVisualStyles();
+        Application.Run(new ReservationForm());
+    }
+}
